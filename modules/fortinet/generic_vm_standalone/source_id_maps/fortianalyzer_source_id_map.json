@@ -1,0 +1,22 @@
+{
+  "7.6.2": {
+    "listing_resource_version": "7.6.2_Paravirtualized_Mode",
+    "mp_listing_id": "ocid1.appcataloglisting.oc1..aaaaaaaa4ehcyncbbmuotd6ede2lengq7uoash27s4hgwpzexsktsxanp6oa",
+    "source_id": "ocid1.image.oc1..aaaaaaaars7raclhriqvxi7zeodsc43xzbcmav3li34cyoru6lykwwpcvolq"
+  },
+  "7.6.1": {
+    "listing_resource_version": "7.6.1_Paravirtualized_Mode",
+    "mp_listing_id": "ocid1.appcataloglisting.oc1..aaaaaaaa4ehcyncbbmuotd6ede2lengq7uoash27s4hgwpzexsktsxanp6oa",
+    "source_id": "ocid1.image.oc1..aaaaaaaanim73irq4zs72ufrchaysmaj6vzz35mmhg6urrondurrk5nwjxca"
+  },
+  "7.4.6": {
+    "listing_resource_version": "7.4.6_Paravirtualized_Mode",
+    "mp_listing_id": "ocid1.appcataloglisting.oc1..aaaaaaaa4ehcyncbbmuotd6ede2lengq7uoash27s4hgwpzexsktsxanp6oa",
+    "source_id": "ocid1.image.oc1..aaaaaaaa2ypyhvf4evmxyde2e32cwju6sjn2vg46bq5u3zu7mumouw6nesaq"
+  },
+  "7.4.5": {
+    "listing_resource_version": "7.4.5_Paravirtualized_Mode",
+    "mp_listing_id": "ocid1.appcataloglisting.oc1..aaaaaaaa4ehcyncbbmuotd6ede2lengq7uoash27s4hgwpzexsktsxanp6oa",
+    "source_id": "ocid1.image.oc1..aaaaaaaatezbv5545ywzmmpovhtp64mj6u2zt4gh2jmm4eiy74gz4y6k7fla"
+  }
+}
