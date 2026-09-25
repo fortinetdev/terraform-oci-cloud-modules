@@ -39,17 +39,17 @@ No modules.
 | <a name="input_compartment_ocid"></a> [compartment\_ocid](#input\_compartment\_ocid) | The OCID of the compartment where resources will be created. | `any` | n/a | yes |
 | <a name="input_custom_security_list_rules"></a> [custom\_security\_list\_rules](#input\_custom\_security\_list\_rules) | Map of security list rules to apply | <pre>object({<br/>    display_name = string<br/>    egress_security_rules = list(object({<br/>      destination = string<br/>      protocol    = string<br/>    }))<br/>    ingress_security_rules = list(object({<br/>      protocol  = string<br/>      source    = string<br/>      stateless = bool<br/>      tcp_options = optional(object({<br/>        min = number<br/>        max = number<br/>      }))<br/>      udp_options = optional(object({<br/>        min = number<br/>        max = number<br/>      }))<br/>      icmp_options = optional(object({<br/>        type = number<br/>        code = number<br/>      }))<br/>    }))<br/>  })</pre> | n/a | yes |
 | <a name="input_fingerprint"></a> [fingerprint](#input\_fingerprint) | The fingerprint of the public key in Oracle Cloud Infrastructure. | `any` | n/a | yes |
-| <a name="input_image_version"></a> [image\_version](#input\_image\_version) | The version of the image to be used. Required only if product\_name is one of 'fortimanager', 'fortianalyzer', 'fortiguest', or 'fortianalyzer'. | `string` | `null` | no |
+| <a name="input_image_version"></a> [image\_version](#input\_image\_version) | The version of the image to be used. Required only if product\_name is one of 'fortimanager', 'fortianalyzer', 'fortiguest', or 'fortiaiops'. | `string` | `null` | no |
 | <a name="input_instance_cpu"></a> [instance\_cpu](#input\_instance\_cpu) | The number of OCPUs to allocate for the instance. | `number` | `4` | no |
 | <a name="input_instance_memory"></a> [instance\_memory](#input\_instance\_memory) | The amount of memory (in GB) to allocate for the instance. | `number` | `16` | no |
 | <a name="input_instance_shape"></a> [instance\_shape](#input\_instance\_shape) | The shape of the instance to be created. Defines the number of OCPUs, memory, and other resources. | `string` | `"VM.Standard.E4.Flex"` | no |
 | <a name="input_listing_resource_version"></a> [listing\_resource\_version](#input\_listing\_resource\_version) | The version of the Marketplace listing resource to use. Required only if product\_name is 'fortigate'. | `string` | `null` | no |
 | <a name="input_mp_listing_id"></a> [mp\_listing\_id](#input\_mp\_listing\_id) | The OCID of the Marketplace listing to use for the instance. Required only if product\_name is 'fortigate'. | `string` | `null` | no |
 | <a name="input_private_key_path"></a> [private\_key\_path](#input\_private\_key\_path) | The file path to the private key used for authentication. | `any` | n/a | yes |
-| <a name="input_product_name"></a> [product\_name](#input\_product\_name) | The name of the product to be created. | `string` | n/a | yes |
+| <a name="input_product_name"></a> [product\_name](#input\_product\_name) | The name of the product to be created. Supported values are 'fortigate', 'fortiproxy', 'fortimanager', 'fortianalyzer', 'fortiguest', and 'fortiaiops'. | `string` | n/a | yes |
 | <a name="input_public_subnet_cidr"></a> [public\_subnet\_cidr](#input\_public\_subnet\_cidr) | The CIDR block for the public subnet within the VCN. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The region where the resources will be created. | `any` | n/a | yes |
-| <a name="input_source_id"></a> [source\_id](#input\_source\_id) | The OCID of the source image to use for the instance. Required only if product\_name is 'fortigate'. | `string` | `null` | no |
+| <a name="input_source_id"></a> [source\_id](#input\_source\_id) | The OCID of the source image to use for the instance. Required if product\_name is 'fortigate' or 'fortiproxy'. For FortiProxy, use the OCID of the custom image imported from the Fortinet-provided image file. | `string` | `null` | no |
 | <a name="input_tag"></a> [tag](#input\_tag) | Map of tags to apply to the resources | `map(string)` | `{}` | no |
 | <a name="input_tenancy_ocid"></a> [tenancy\_ocid](#input\_tenancy\_ocid) | The OCID of your tenancy in Oracle Cloud Infrastructure. | `any` | n/a | yes |
 | <a name="input_user_ocid"></a> [user\_ocid](#input\_user\_ocid) | The OCID of the user in Oracle Cloud Infrastructure. | `any` | n/a | yes |
@@ -60,4 +60,39 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_instance_public_ip"></a> [instance\_public\_ip](#output\_instance\_public\_ip) | n/a |
+| <a name="output_admin_initial_password"></a> [admin\_initial\_password](#output\_admin\_initial\_password) | Product-specific initial GUI password or first-login password guidance. |
+| <a name="output_admin_login_note"></a> [admin\_login\_note](#output\_admin\_login\_note) | Additional product-specific login notes. |
+| <a name="output_admin_url"></a> [admin\_url](#output\_admin\_url) | URL to access the product GUI. |
+| <a name="output_admin_username"></a> [admin\_username](#output\_admin\_username) | Initial GUI username. |
+| <a name="output_instance_id"></a> [instance\_id](#output\_instance\_id) | OCID of the deployed OCI instance. Some Fortinet products use this as the initial admin password. |
+| <a name="output_instance_public_ip"></a> [instance\_public\_ip](#output\_instance\_public\_ip) | Public IP assigned to the instance. |
+
+## Post-deployment Login
+
+Use the `admin_url`, `admin_username`, `admin_initial_password`, and `admin_login_note` outputs after `terraform apply`.
+
+Initial GUI login defaults:
+
+| Product | Username | Initial password |
+| --- | --- | --- |
+| FortiGate | `admin` | OCI instance OCID |
+| FortiProxy | `admin` | OCI instance OCID |
+| FortiManager | `admin` | OCI instance OCID |
+| FortiAnalyzer | `admin` | OCI instance OCID |
+| FortiGuest | `admin` | No password on first GUI login |
+| FortiAIOps 2.x | `admin` | `admin` |
+| FortiAIOps 3.x | `admin` | No password on first GUI login |
+
+For FortiGuest, open `https://<public_ip>/adminportal/auth/login`. FortiGuest will prompt you to set a new password. GUI and CLI admin credentials are different.
+
+## FortiProxy
+
+FortiProxy on OCI is deployed from an imported custom image instead of a module-provided Marketplace source map. Download the FortiProxy OCI/KVM image from Fortinet Support, extract `fortiproxy.qcow2`, upload it to Object Storage, import it as a QCOW2 custom image, and use the imported image OCID as `source_id`.
+
+```hcl
+product_name    = "fortiproxy"
+source_id       = "ocid1.image.oc1.<region>.<your_imported_fortiproxy_image_ocid>"
+instance_cpu    = 2
+instance_memory = 16
+instance_shape  = "VM.Standard.E3.Flex"
+```

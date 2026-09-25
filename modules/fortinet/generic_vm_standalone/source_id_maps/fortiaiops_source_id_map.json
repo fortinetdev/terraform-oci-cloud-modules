@@ -1,4 +1,9 @@
 {
+  "3.0.1": {
+    "listing_resource_version": "3.0.1",
+    "mp_listing_id": "ocid1.appcataloglisting.oc1..aaaaaaaaqh4tet7fksyud7xswxwse34ybeo4bttqxchr2ley54ufiunnvpqa",
+    "source_id": "ocid1.image.oc1..aaaaaaaajcaceokqoaqqx6jo5ig77s3xxipxq67s53cdmzh6hyeix4yl5bjq"
+  },
   "2.1.0": {
     "listing_resource_version": "2.1.0",
     "mp_listing_id": "ocid1.appcataloglisting.oc1..aaaaaaaaqh4tet7fksyud7xswxwse34ybeo4bttqxchr2ley54ufiunnvpqa",

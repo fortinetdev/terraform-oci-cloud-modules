@@ -10,37 +10,46 @@
 # Required information for Marketplace Image
 
 product_name    = "fortiguest"
-image_version   = "2.0.0"
+image_version   = "2.4.0"
 instance_cpu    = 2
 instance_memory = 16
 instance_shape  = "VM.Standard.E4.Flex"
 
 # Needs more time to complete the initialization, # Please wait for a while
 # product_name  = "fortiaiops"
-# image_version = "2.1.0"
+# image_version = "3.0.1"
 # instance_cpu    = 2
 # instance_memory = 16
 # instance_shape  = "VM.Standard.E4.Flex"
 
 # Needs more time to complete the initialization, # Please wait for a while
 # product_name    = "fortimanager"
-# image_version   = "7.6.2"
+# image_version   = "7.6.4"
 # instance_cpu    = 4
 # instance_memory = 16
 # instance_shape  = "VM.Standard.E3.Flex"
 
 # Needs more time to complete the initialization, # Please wait for a while
 # product_name    = "fortianalyzer"
-# image_version   = "7.6.2"
+# image_version   = "7.6.4"
 # instance_cpu    = 4
 # instance_memory = 16
 # instance_shape  = "VM.Standard.E3.Flex"
 
+# FortiProxy on OCI uses a custom image imported from the Fortinet-provided image file.
+# Set source_id to the OCID of that imported image.
+# product_name    = "fortiproxy"
+# source_id       = "ocid1.image.oc1..YOUR_IMPORTED_FORTIPROXY_IMAGE_OCID"
+# instance_cpu    = 2
+# instance_memory = 16
+# instance_shape  = "VM.Standard.E3.Flex"
+# license_path    = "YOUR_OWN_VALUE"
+
 # Please refer to /docs/generic_vm_standalone.md to find the correct values for mp_listing_id, source_id, and listing_resource_version.
 # product_name             = "fortigate"
-# listing_resource_version = "7.6.2_(_X64_)"
+# listing_resource_version = "7.6.4_(_X64_)"
 # mp_listing_id            = "ocid1.appcataloglisting.oc1..aaaaaaaam7ewzrjbltqiarxukuk72v2lqkdtpqtwxqpszqqvrm7likfnpt5q"
-# source_id                = "ocid1.image.oc1..aaaaaaaas3kl6ynyigahrsiegwzesfub6nffiy6qxlrhs742p6ltvode257a"
+# source_id                = "ocid1.image.oc1..aaaaaaaa6sh4hz4ziatjmda262htabajhihetqgli22mnfyksxjly7gy26gq"
 # instance_cpu             = 2
 # instance_memory          = 16
 # instance_shape           = "VM.Standard.E3.Flex"

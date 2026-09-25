@@ -1,10 +1,17 @@
 # Local variables to get the Marketplace listing ID based on product_name
 locals {
+  mapped_marketplace_product_names = ["fortiaiops", "fortiguest", "fortimanager", "fortianalyzer"]
+  custom_source_id_product_names   = ["fortigate", "fortiproxy"]
+
+  uses_mapped_marketplace_image = contains(local.mapped_marketplace_product_names, var.product_name)
+  uses_marketplace_image        = var.product_name != "fortiproxy"
+  uses_custom_source_id_image   = contains(local.custom_source_id_product_names, var.product_name)
+
   mp_listing_id = (
     var.product_name == "fortigate"
     ? var.mp_listing_id
     : (
-      contains(["fortiaiops", "fortiguest", "fortimanager", "fortianalyzer"], var.product_name)
+      local.uses_mapped_marketplace_image
       ? lookup(
         jsondecode(file("${path.module}/source_id_maps/${var.product_name}_source_id_map.json"))[var.image_version],
         "mp_listing_id",
@@ -17,7 +24,7 @@ locals {
     var.product_name == "fortigate"
     ? var.listing_resource_version
     : (
-      contains(["fortiaiops", "fortiguest", "fortimanager", "fortianalyzer"], var.product_name)
+      local.uses_mapped_marketplace_image
       ? lookup(
         jsondecode(file("${path.module}/source_id_maps/${var.product_name}_source_id_map.json"))[var.image_version],
         "listing_resource_version",
@@ -133,18 +140,22 @@ resource "oci_core_subnet" "public_subnet" {
 
 # Accept Marketplace Image Terms
 resource "oci_core_app_catalog_listing_resource_version_agreement" "image_agreement" {
+  count = local.uses_marketplace_image ? 1 : 0
+
   listing_id               = local.mp_listing_id
   listing_resource_version = local.mp_listing_resource_version
 }
 
 resource "oci_core_app_catalog_subscription" "image_subscription" {
+  count = local.uses_marketplace_image ? 1 : 0
+
   compartment_id           = var.compartment_ocid
-  eula_link                = oci_core_app_catalog_listing_resource_version_agreement.image_agreement.eula_link
+  eula_link                = oci_core_app_catalog_listing_resource_version_agreement.image_agreement[0].eula_link
   listing_id               = local.mp_listing_id
   listing_resource_version = local.mp_listing_resource_version
-  oracle_terms_of_use_link = oci_core_app_catalog_listing_resource_version_agreement.image_agreement.oracle_terms_of_use_link
-  signature                = oci_core_app_catalog_listing_resource_version_agreement.image_agreement.signature
-  time_retrieved           = oci_core_app_catalog_listing_resource_version_agreement.image_agreement.time_retrieved
+  oracle_terms_of_use_link = oci_core_app_catalog_listing_resource_version_agreement.image_agreement[0].oracle_terms_of_use_link
+  signature                = oci_core_app_catalog_listing_resource_version_agreement.image_agreement[0].signature
+  time_retrieved           = oci_core_app_catalog_listing_resource_version_agreement.image_agreement[0].time_retrieved
 
   timeouts {
     create = "30m"
@@ -153,7 +164,10 @@ resource "oci_core_app_catalog_subscription" "image_subscription" {
 
 # Create VM Instance
 resource "oci_core_instance" "vm_instance" {
-  depends_on = [oci_core_internet_gateway.igw]
+  depends_on = [
+    oci_core_internet_gateway.igw,
+    oci_core_app_catalog_subscription.image_subscription
+  ]
 
   availability_domain = data.oci_identity_availability_domains.ads.availability_domains[var.availability_domain - 1].name
   compartment_id      = var.compartment_ocid
@@ -179,10 +193,10 @@ resource "oci_core_instance" "vm_instance" {
   source_details {
     source_type = "image"
     source_id = (
-      var.product_name == "fortigate"
+      local.uses_custom_source_id_image
       ? var.source_id
       : (
-        contains(["fortiguest", "fortiaiops", "fortimanager", "fortianalyzer"], var.product_name)
+        local.uses_mapped_marketplace_image
         ? lookup(
           jsondecode(file("${path.module}/source_id_maps/${var.product_name}_source_id_map.json"))[var.image_version],
           "source_id",

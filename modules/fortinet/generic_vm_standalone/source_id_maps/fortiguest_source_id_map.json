@@ -1,7 +1,17 @@
 {
+  "2.4.0": {
+    "listing_resource_version": "2.4.0",
+    "mp_listing_id": "ocid1.appcataloglisting.oc1..aaaaaaaanvadbqcdfhmdezf4lly44xokjr22sgxavk332sv5kdtqidw3jaua",
+    "source_id": "ocid1.image.oc1..aaaaaaaa453cnnqyakq7f66k6v6iazcbj3k4m2oewsqv3yjl5pr3ce5vp5qq"
+  },
+  "2.2.1": {
+    "listing_resource_version": "2.2.1",
+    "mp_listing_id": "ocid1.appcataloglisting.oc1..aaaaaaaanvadbqcdfhmdezf4lly44xokjr22sgxavk332sv5kdtqidw3jaua",
+    "source_id": "ocid1.image.oc1..aaaaaaaa6o4ufjatpxpozgqzad6xokweacnihl6l23ppzeo6352anb3mv4aa"
+  },
   "2.2.0": {
     "listing_resource_version": "2.2.0",
-    "listing_id": "ocid1.appcataloglisting.oc1..aaaaaaaanvadbqcdfhmdezf4lly44xokjr22sgxavk332sv5kdtqidw3jaua",
+    "mp_listing_id": "ocid1.appcataloglisting.oc1..aaaaaaaanvadbqcdfhmdezf4lly44xokjr22sgxavk332sv5kdtqidw3jaua",
     "source_id": "ocid1.image.oc1..aaaaaaaaepqzerrod3ri2s2srzgro3s66pte2x5vkggpfbrybzzpifys6boq"
   },
   "2.0.0": {

@@ -36,18 +36,23 @@ variable "public_subnet_cidr" {
 
 // Marketplace Image Configuration
 variable "product_name" {
-  description = "The name of the product to be created."
+  description = "The name of the product to be created. Supported values are 'fortigate', 'fortiproxy', 'fortimanager', 'fortianalyzer', 'fortiguest', and 'fortiaiops'."
   type        = string
+
+  validation {
+    condition     = contains(["fortigate", "fortiproxy", "fortimanager", "fortianalyzer", "fortiguest", "fortiaiops"], var.product_name)
+    error_message = "product_name must be one of 'fortigate', 'fortiproxy', 'fortimanager', 'fortianalyzer', 'fortiguest', or 'fortiaiops'."
+  }
 }
 
 variable "image_version" {
-  description = "The version of the image to be used. Required only if product_name is one of 'fortimanager', 'fortianalyzer', 'fortiguest', or 'fortianalyzer'."
+  description = "The version of the image to be used. Required only if product_name is one of 'fortimanager', 'fortianalyzer', 'fortiguest', or 'fortiaiops'."
   type        = string
   default     = null
 
   validation {
-    condition     = !contains(["fortimanager", "fortianalyzer", "fortiguest", "fortianalyzer"], var.product_name) || (var.image_version != null && var.image_version != "")
-    error_message = "image_version must be set when product_name is one of 'fortimanager', 'fortianalyzer', 'fortiguest', or 'fortianalyzer'."
+    condition     = !contains(["fortimanager", "fortianalyzer", "fortiguest", "fortiaiops"], var.product_name) || (var.image_version != null && var.image_version != "")
+    error_message = "image_version must be set when product_name is one of 'fortimanager', 'fortianalyzer', 'fortiguest', or 'fortiaiops'."
   }
 }
 
@@ -134,59 +139,59 @@ variable "listing_resource_version" {
 }
 
 variable "source_id" {
-  description = "The OCID of the source image to use for the instance. Required only if product_name is 'fortigate'."
+  description = "The OCID of the source image to use for the instance. Required if product_name is 'fortigate' or 'fortiproxy'. For FortiProxy, use the OCID of the custom image imported from the Fortinet-provided image file."
   type        = string
   default     = null
 
   validation {
-    condition     = var.product_name != "fortigate" || (var.product_name == "fortigate" && can(regex("ocid1.image.oc1..*", var.source_id)))
-    error_message = "source_id must be a valid OCID for an image when product_name is 'fortigate'."
+    condition     = !contains(["fortigate", "fortiproxy"], var.product_name) || can(regex("ocid1.image.oc1..*", var.source_id))
+    error_message = "source_id must be a valid OCI image OCID when product_name is 'fortigate' or 'fortiproxy'."
   }
 
 }
 
 variable "bootstrap_config" {
-  description = "The bootstrap configuration for the instance. Optional and used only if product_name is 'fortigate'."
+  description = "The bootstrap configuration for the instance. Optional and used for FortiGate and FortiProxy bootstrap data."
   type        = string
   default     = "./bootstrap_config.tpl"
 
   validation {
-    condition     = var.product_name != "fortigate" || var.bootstrap_config == null || var.bootstrap_config != ""
-    error_message = "If provided, bootstrap_config must not be an empty string when product_name is 'fortigate'."
+    condition     = !contains(["fortigate", "fortiproxy"], var.product_name) || var.bootstrap_config == null || var.bootstrap_config != ""
+    error_message = "If provided, bootstrap_config must not be an empty string when product_name is 'fortigate' or 'fortiproxy'."
   }
 
 }
 
 variable "license_path" {
-  description = "The path to the license file to be used for the instance. Optional and used only if product_name is 'fortigate'."
+  description = "The path to the license file to be used for the instance. Optional and used for FortiGate and FortiProxy."
   type        = string
   default     = null
 
   validation {
-    condition     = var.product_name != "fortigate" || var.license_path == null || var.license_path != ""
-    error_message = "If provided, license_path must not be an empty string when product_name is 'fortigate'."
+    condition     = !contains(["fortigate", "fortiproxy"], var.product_name) || var.license_path == null || var.license_path != ""
+    error_message = "If provided, license_path must not be an empty string when product_name is 'fortigate' or 'fortiproxy'."
   }
 }
 
 variable "license_fortiflex" {
-  description = "The FlexToken for the license. Optional and used only if product_name is 'fortigate'."
+  description = "The FlexToken for the license. Optional and used for FortiGate and FortiProxy."
   type        = string
   default     = null
 
   validation {
-    condition     = var.product_name != "fortigate" || var.license_fortiflex == null || var.license_fortiflex != ""
-    error_message = "If provided, license_fortiflex must not be an empty string when product_name is 'fortigate'."
+    condition     = !contains(["fortigate", "fortiproxy"], var.product_name) || var.license_fortiflex == null || var.license_fortiflex != ""
+    error_message = "If provided, license_fortiflex must not be an empty string when product_name is 'fortigate' or 'fortiproxy'."
   }
 }
 
 variable "custom_data_file_path" {
-  description = "The path to the custom data file to be used for the instance. Optional and used only if product_name is 'fortigate'."
+  description = "The path to the custom data file to be used for the instance. Optional and used for FortiGate and FortiProxy."
   type        = string
   default     = null
 
   validation {
-    condition     = var.product_name != "fortigate" || var.custom_data_file_path == null || var.custom_data_file_path != ""
-    error_message = "If provided, custom_data_file_path must not be an empty string when product_name is 'fortigate'."
+    condition     = !contains(["fortigate", "fortiproxy"], var.product_name) || var.custom_data_file_path == null || var.custom_data_file_path != ""
+    error_message = "If provided, custom_data_file_path must not be an empty string when product_name is 'fortigate' or 'fortiproxy'."
   }
 }
 
